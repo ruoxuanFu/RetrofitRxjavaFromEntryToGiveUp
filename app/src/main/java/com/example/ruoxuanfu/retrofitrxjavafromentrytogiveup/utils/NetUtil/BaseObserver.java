@@ -3,8 +3,6 @@ package com.example.ruoxuanfu.retrofitrxjavafromentrytogiveup.utils.NetUtil;
 import android.content.Context;
 import android.util.Log;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -18,7 +16,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     private static final String TAG = "BaseObserver";
 
     private Context mContext;
-    private KProgressHUD mKProgressHUD;
     private Disposable mDisposable;
 
     protected abstract void onRequestStart();
@@ -31,9 +28,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
 
     public BaseObserver(Context context) {
         mContext = context;
-        mKProgressHUD = KProgressHUD.create(context).setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setLabel("请稍后...").setDetailsLabel("正在加载...")
-                .setCancellable(false).setAnimationSpeed(2).setDimAmount(0.5f);
     }
 
     @Override
@@ -42,7 +36,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
         //添加订阅事件
         mDisposable = d;
         onRequestStart();
-        mKProgressHUD.show();
         switch (getNetStatus()) {
             case NET_NO:
                 Log.d("TAG", "There is no network.");
@@ -78,7 +71,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
         Log.e(TAG, "onError: type is " + type + ",msg is " + msg, e);
         onRequestError(type, msg);
         onRequestComplete();
-        mKProgressHUD.dismiss();
         setDisposableDis();
     }
 
@@ -86,7 +78,6 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse<T>> {
     public void onComplete() {
         Log.d(TAG, "onComplete");
         onRequestComplete();
-        mKProgressHUD.dismiss();
         setDisposableDis();
     }
 

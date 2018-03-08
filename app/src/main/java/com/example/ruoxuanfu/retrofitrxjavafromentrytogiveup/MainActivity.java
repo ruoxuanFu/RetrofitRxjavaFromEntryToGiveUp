@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         String userId = "30911";
         request.setUserId(userId);
 
-        RetrofitBuilder.getInstance().create(NetConfig.BASE_URL).getApiService()
+        RetrofitBuilder.getInstance(this).create(NetConfig.BASE_URL).getApiService()
                 .toPersonalIndexStu(request)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<PersonalIndexStuResponse>(this) {
